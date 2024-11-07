@@ -1,15 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import Error from "@/app/components/toast/Error";
+import { useRouter } from "next/navigation";
+import Error from "@/components/toast/Error";
 import Link from "next/link";
+import { credentialLogin } from "@/app/actions";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const [error, setError] = useState("");
+
+  async function handleSubmit( event: React.FormEvent<HTMLFormElement> ) {
+    event.preventDefault();
+    try {
+        const formData = new FormData(event.currentTarget);
+
+        const response = await credentialLogin(formData);
+
+        if (!!response.error) {
+            console.error(response.error);
+            setError(response.error.message);
+        } else {
+            router.push("/");
+        }
+    } catch (e) {
+        console.error(e);
+        setError("Check your Credentials");
+    }
+}
 
   return (
-    <form className="space-y-4 md:space-y-6">
+    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
       <div>
         <label
           htmlFor="email"
@@ -24,7 +46,6 @@ function LoginForm() {
           className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
           placeholder="name@company.com"
           autoFocus
-          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
@@ -41,7 +62,6 @@ function LoginForm() {
           id="password"
           placeholder="••••••••"
           className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-          onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
@@ -54,12 +74,13 @@ function LoginForm() {
       <p className="text-sm font-light text-gray-400">
         Don’t have an account yet?{" "}
         <Link
-          href="/signup"
+          href="/register"
           className="font-medium hover:underline text-primary-500"
         >
           Sign up
         </Link>
       </p>
+      {error && <Error message={error}/>}
     </form>
   );
 }

@@ -2,19 +2,39 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import Error from './toast/Error';
 
 function RigistrationForm() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const router = useRouter();
+    const [error, setError] = useState("");
 
-    const handleSubmit = async(e:any) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             const formData = new FormData( e.currentTarget );
-        } catch (error) {
+
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            const response = await fetch(`/api/register`, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+            });
+
+            response.status === 201 && router.push('/');
+        } catch (error:any) {
             console.log(error);
+            setError(error);
         }
     }
   return (
@@ -37,7 +57,6 @@ function RigistrationForm() {
                   type="email"
                   name="email"
                   id="email"
-                  onChange={(e) => setEmail(e.target.value)}
                   className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   placeholder="name@company.com"
                   required
@@ -54,7 +73,6 @@ function RigistrationForm() {
                   type="text"
                   name="name"
                   id="name"
-                  onChange={(e) => setName(e.target.value)}
                   className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Khalid"
                   required
@@ -72,7 +90,6 @@ function RigistrationForm() {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  onChange={(e) => setPassword(e.target.value)}
                   className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
@@ -98,7 +115,7 @@ function RigistrationForm() {
           </div>
         </div>
       </div>
-      {/* {error && <Error message={error}/>} */}
+      {error && <Error message={error}/>}
     </section>
   )
 }

@@ -7,6 +7,19 @@ export async function socialLogin ( formData: any ) {
     await signIn(action, { redirectTo: '/' });
 }
 
+export async function credentialLogin ( formData: any ) {
+    try {
+        const response = await signIn("credentials", {
+          email: formData.get("email"),
+          password: formData.get("password"),
+          redirect: false,
+        });
+        return response;
+      } catch (err) {
+        throw err;
+      }
+}
+
 export async function logout () {
     await signOut({ redirectTo: '/login' });
 }

@@ -13,11 +13,12 @@ export default async function Home() {
   return (
     <div>
       <h1>Welcome {session?.user?.name}</h1>
+      {session?.user?.image && 
       <Image 
       src={session?.user?.image || ''} 
       alt={session?.user?.name || ''} 
       width={100} 
-      height={100} />
+      height={100} />}
       <Logout>
         <button>Logout</button>
       </Logout>
