@@ -25,7 +25,7 @@ function LoginForm() {
             router.push("/");
         }
     } catch (e) {
-        console.error(e);
+        console.log(e);
         setError("Check your Credentials");
     }
 }

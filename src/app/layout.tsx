@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { dbConnection } from "@/db/database";
+import { dbConnection } from "@/lib/database";
+import Nav from '@/components/navbar/Nav'
+import { auth } from "@/auth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,13 +27,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   await dbConnection();
+  const session = await auth();
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {session && <Nav session={session}/>}
+        <div className={`${session ? 'sm:ml-64 mt-14' : ''}`}>
+          {children}
+        </div>
       </body>
     </html>
   );
