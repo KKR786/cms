@@ -1,15 +1,8 @@
-"use client";
-
-import { useState } from "react";
-import Error from "@/components/toast/Error";
-import Link from "next/link";
-import SocialLoginForm from "../../components/login/SocialLoginForm";
-import LoginForm from "../../components/login/LoginForm";
+import SocialLoginForm from "@/components/login/SocialLoginForm";
+import LoginForm from "@/components/login/LoginForm";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  
   return (
     <section className="bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -28,7 +21,6 @@ function Login() {
           </div>
         </div>
       </div>
-      {/* {error && <Error message={error}/>} */}
     </section>
   );
 }
