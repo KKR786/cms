@@ -1,5 +1,7 @@
+
 import Sticky from '@/app/_ui/footers/Sticky'
 import Default from '@/app/_ui/headers/Default'
+import Tracker from '@/components/Tracker'
 import Link from 'next/link'
 import React from 'react'
 
@@ -21,6 +23,7 @@ function Home() {
                     </li>
         </Default>
       <h1>This is dev test</h1>
+      <Tracker />
       <Sticky companyName='Dreamer'>
         <li>
             <Link href="#" className="hover:underline me-4 md:me-6">About</Link>

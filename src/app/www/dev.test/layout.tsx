@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../../globals.css";
+import { PageVisitTrackerProvider } from '@/context/PageVisitTrackerContext';
 
 const geistSans = localFont({
   src: "../../fonts/GeistVF.woff",
@@ -30,7 +31,9 @@ export default function DevLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <PageVisitTrackerProvider>
           {children}
+        </PageVisitTrackerProvider>
       </body>
     </html>
   );
